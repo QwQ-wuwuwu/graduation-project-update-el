@@ -32,7 +32,7 @@ export interface Student {
   queueNumber?:number,
   projectTitle?:string,
   groupId?:string,
-  teacherId:string
+  teacherId?:string
 }
 export interface Teacher {
   id?:string,
