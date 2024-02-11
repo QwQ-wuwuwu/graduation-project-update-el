@@ -4,6 +4,11 @@ import {ref} from 'vue'
 
 export const useTeacherStore = defineStore('useTeacherStore', () => {
     const teachers = ref<Teacher[]>([])
+    const getGroupTeacher = (gid:any) => {
+        let groupTeachers = []
+        groupTeachers = teachers.value.filter(t => t.groupId == gid)
+        return groupTeachers
+    }
     const getTeacher = (number:any) => {
         const teacher = ref<Teacher>()
         teachers.value.forEach(t => {
@@ -14,5 +19,5 @@ export const useTeacherStore = defineStore('useTeacherStore', () => {
         })
         return teacher.value
     }
-    return {teachers, getTeacher}
+    return {teachers, getTeacher,getGroupTeacher}
 })

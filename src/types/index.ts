@@ -31,7 +31,8 @@ export interface Student {
   number?:string,
   queueNumber?:number,
   projectTitle?:string,
-  groupId?:string
+  groupId?:string,
+  teacherId:string
 }
 export interface Teacher {
   id?:string,

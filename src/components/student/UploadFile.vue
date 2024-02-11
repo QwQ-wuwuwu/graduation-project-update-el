@@ -71,7 +71,8 @@ const submitFile = async () => {
         url: `/student/upload/${selection.value.pid}/${selection.value.pname}/${numberS.value}`,
         data: formData
     }).then(() => {
-        alert('文件上传成功')
+      //@ts-ignore
+      ElMessage({message:'文件上传成功！', type:'success', center: true })
     })
     // 清空上一次输入
     formData.delete('file')
@@ -86,6 +87,7 @@ const submitFile = async () => {
 </script>
 <template>
   <div style="margin-top: 15px;">
+    <el-text type="danger" size="large">请先选择--></el-text>
     <el-radio-group v-model="selection" size="large" v-for="p in processes" :key="p.id" @change="showInfo">
       <el-radio-button :label="{pname:p.processName, pid:p.id}">{{ p.processName }}</el-radio-button>
     </el-radio-group>
@@ -118,7 +120,7 @@ const submitFile = async () => {
   <br>
   <el-text type="danger" size="small">*上传同一阶段同一扩展名文件将自动覆盖前版</el-text>
 
-  <el-dialog v-model="selectVisible" title="选择附件类型：" width="30%">
+  <el-dialog v-model="selectVisible" title="选择阶段附件类型：" width="30%">
     <el-table :data="attach" style="width: 100%" >
       <el-table-column type="index" label="序号" width="60" />
       <el-table-column prop="name" label="名称" width="100" />

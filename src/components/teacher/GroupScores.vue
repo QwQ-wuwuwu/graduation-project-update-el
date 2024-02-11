@@ -91,9 +91,9 @@ students.value.forEach((s) => {
         </div>
         <el-table :data="studentsScores" style="width: 100%; margin-top: 15px;"
          :default-sort="{ prop: 'totalScore', order: 'descending' }">
-            <el-table-column type="index" label="#" width="90" />
-            <el-table-column prop="student.name" label="姓名" width="90" />
-            <el-table-column prop="student.teacherName" label="指导教师" width="180" />
+            <el-table-column type="index" label="#"/>
+            <el-table-column prop="student.name" label="姓名"/>
+            <el-table-column prop="student.teacherName" label="指导教师"/>
             <el-table-column prop="totalScore" label="总成绩"/>
             <el-table-column v-for="(p,index) in processes" :key="p.id" :label="p.processName + p.point + '%'">
                 <template #default="scope">

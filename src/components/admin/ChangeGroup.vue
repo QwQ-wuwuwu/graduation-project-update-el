@@ -1,29 +1,62 @@
 <script setup lang="ts">
-import {getAllGroups,groups, getALlStudents, updateGroup, postStudentsGroup} from '@/service/adminService'
+import {getAllGroups,groups, getALlStudents, updateGroup, postStudentsGroup, getAllTeachers} from '@/service/adminService'
 import { useStudentStore } from "@/stores/StudentStore"
-import type { Student } from '@/types';
+import { useTeacherStore } from "@/stores/TeacherStore"
+import type { Student, Teacher } from '@/types';
 
 import {ref} from 'vue'
 
 getAllGroups()
 getALlStudents()
+getAllTeachers()
+
+interface newStudent {
+    student:Student,
+    tgroup:number
+}
 
 const dialogVisible = ref(false)
 const group = ref()
 const newGroup = ref()
 const studentId = ref('')
 const student = ref<Student>()
+const teacherStore = useTeacherStore()
+const teachers = ref<Teacher[]>([])
 const studentStore = useStudentStore()
 const groupStudent = ref<Student[]>([])
+const groupTeachers = ref<Teacher[]>([])
+const newGroupStudents = ref<newStudent[]>([])
+const newGroups = ref<any[]>([])
 
 const getStudents = (gid:number) => {
+    newGroupStudents.value = []
     group.value = gid
     groupStudent.value = studentStore.groupStudent(gid).value
+    groupTeachers.value = teacherStore.getGroupTeacher(gid)
+    teachers.value = teacherStore.teachers
+    teachers.value.forEach(t => {
+        groupStudent.value.forEach(s => {
+            const student: newStudent = { student: s, tgroup: 0 }
+            if (s.teacherId == t.id) {
+                student.tgroup = t.groupId
+                newGroupStudents.value.push(student)
+            }
+        })
+    })
 }
 const updateGroupF = (sid:string) => {
+    newGroups.value = []
     newGroup.value = null
     studentId.value = sid
     student.value = studentStore.getStudent(sid).value
+    newGroupStudents.value.filter(s => s.student.id == sid)
+    .map(ns => {
+        groups.value.forEach((g:any) => {
+            if(g != ns.tgroup && g != ns.student.groupId) {
+                newGroups.value.push(g)
+            }
+        })
+    })
     dialogVisible.value = true
 }
 const confirmGroup = async () => {
@@ -44,18 +77,22 @@ const creatQueueNumber = () => {
         </div></el-col>
     </el-row>
     <div style="margin-top: 15px;">
-        <el-text type="danger" size="large">第{{ group }}组人数：
-            <el-tag type="danger" size="large">{{ groupStudent.length }}</el-tag></el-text>
+        <el-text type="danger" size="large">第{{ group }}组学生人数：
+            <el-tag type="danger">{{ groupStudent.length }}</el-tag></el-text> <br> <br>
+        <el-text type="info" size="large">审核导师：
+            <el-tag v-for="t in groupTeachers" :key="t.id" type="danger">{{ t.name }}</el-tag>
+        </el-text>
     </div>
     <el-row >
-        <el-table style="width: 100%; margin-top: 15px;" :data="groupStudent">
+        <el-table style="width: 100%; margin-top: 15px;" :data="newGroupStudents">
                 <el-table-column type="index" label="序号" width="180"/>
-                <el-table-column prop="name" label="姓名"/>
-                <el-table-column prop="groupId" label="审核小组"/>
-                <el-table-column prop="queueNumber" label="答辩顺序"/>
+                <el-table-column prop="student.name" label="姓名"/>
+                <el-table-column prop="student.groupId" label="审核小组"/>
+                <el-table-column prop="tgroup" label="不可分配到"/>
+                <el-table-column prop="student.queueNumber" label="答辩顺序"/>
                 <el-table-column>
                     <template #default="scope">
-                        <el-button size="small" type="primary" @click="updateGroupF(scope.row.id)" >
+                        <el-button size="small" type="primary" @click="updateGroupF(scope.row.student.id)" >
                             <el-icon><Edit /></el-icon>修改</el-button>
                     </template>
                 </el-table-column>
@@ -70,7 +107,7 @@ const creatQueueNumber = () => {
             <el-tag>{{ group }}</el-tag> <br> <br>
             将其分配到：
             <el-select v-model="newGroup" size="small" placeholder="Select" style="width: 80px">
-                <el-option v-for="g in groups" :key="g" :label="g" :value="g"/>
+                <el-option v-for="g in newGroups" :key="g" :label="g" :value="g"/>
             </el-select>
         </div>
         <template #footer>

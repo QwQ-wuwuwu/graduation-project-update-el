@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import {ref} from 'vue'
 import axios from "@/axios"
+import router from '@/router'
 
 const password1 = ref('')
 const password2 = ref('')
@@ -18,8 +19,10 @@ const confirmPassword = async () => {
         method: 'put',
         url: `/user/password/${password2.value}`
     }).then(() => {
-        alert('修改成功')
+        //@ts-ignore
+      ElMessage({message:'密码已重置，请妥善保存', type:'success', center: true })
     })
+    router.push('/')
 }
 const resetPassword = () => {
     password1.value = ''

@@ -31,7 +31,7 @@ const toUnlogin = () => {
                             <el-button @click="toUpdatePassword" type="primary"><el-icon><Setting /></el-icon>修改密码</el-button>
                             <el-button @click="toUnlogin" type="danger"><el-icon>
                                 <SwitchButton />
-                            </el-icon>unLogin</el-button>
+                            </el-icon>logout</el-button>
                         </div>
                     </el-col>
                 </el-row>

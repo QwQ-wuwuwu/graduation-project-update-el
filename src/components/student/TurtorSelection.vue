@@ -26,16 +26,16 @@ const confirm = async () => {
 <template>
     <el-row v-if="code != 200" style="margin-top: 30px;">
         <el-col>
-            <el-text type="danger" size="large">您已选择导师！</el-text> <br> <br>
-            <el-text type="danger" size="large">-指导教师-：</el-text>
+            <el-text type="success" size="large">您已选择导师！</el-text> <br> <br>
+            <el-text type="success" size="large">-指导教师-：</el-text>
             <el-tag type="danger" size="large" effect="light">
                 {{ student?.teacherName }}
             </el-tag> <br> <br>
-            <el-text type="danger" size="large">-毕设答辩小组-：</el-text>
+            <el-text type="success" size="large">-毕设答辩小组-：</el-text>
             <el-tag type="danger" size="large" effect="light">
                 第{{ student?.groupId }}组
             </el-tag> <br> <br>
-            <el-text v-show="student.queueNumber" type="danger" size="large">-毕设答辩顺序-：
+            <el-text v-show="student.queueNumber" type="success" size="large">-毕设答辩顺序-：
                 <el-tag type="danger" size="large" effect="light">
                 序号{{ student?.queueNumber }}
             </el-tag></el-text>
@@ -46,10 +46,10 @@ const confirm = async () => {
         </el-col>
     </el-row>
     <el-table v-if="code == 200" :data="teachers" style="width: 100%" >
-        <el-table-column type="index" label="#" width="180" />
-        <el-table-column prop="name" label="姓名" width="180" />
-        <el-table-column prop="leftSelect" label="可选人数" width="180" />
-        <el-table-column prop="groupId" label="所在审核小组" width="180" />
+        <el-table-column type="index" label="#" />
+        <el-table-column prop="name" label="姓名"/>
+        <el-table-column prop="leftSelect" label="可选人数"/>
+        <el-table-column prop="groupId" label="所在审核小组"/>
         <el-table-column>
             <template #default="scope">
                 <el-button size="large" type="success" @click="selection(scope.row.id,scope.row.name)">

@@ -72,7 +72,8 @@ export const postProcessScore = async (processScore:any) => {
         data: processScore
     }).then((res:any) => {
         if(res.data.code == 200) {
-            alert('打分成功')
+            //@ts-ignore
+            ElMessage({message:'评分成功！', type:'success', center: true })
         }
         else alert(res.data.message)
     })
@@ -93,7 +94,7 @@ export const getFile = async (pid:string,sNumber:string,pNumber:any) => {
         responseType: 'blob'
     }).then((res:any) => {
         if(res.headers['filename'] == null) {
-            alert('该阶段没有文件')
+            alert('该学生未上传此文件')
             return
         }
         const filename = decodeURIComponent(res.headers['filename']) // 解码后端返回的字节流文件名
@@ -143,4 +144,20 @@ export const getAllProcessScores = async () => {
     .then(res => {
         processScoreStore.processScores = res.data.data.processScores ?? []
     })
+}
+export const getProcessScores = async (pid:string) => {
+    let processScores:any = []
+    await axios.get(`/teacher/processScores/${pid}`)
+    .then(res => {
+        processScores = res.data.data.processScores ?? []
+    })
+    return processScores
+}
+export const getAllFiles = async () => {
+    let files:any = []
+    await axios.get('/teacher/files')
+    .then(res => {
+        files = res.data.data.files ?? []
+    })
+    return files
 }

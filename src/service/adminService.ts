@@ -2,6 +2,7 @@ import axios from "@/axios"
 import type { Process, ProcessItem, StudentAttach, Teacher, Student } from '@/types'
 import { useProcessStore } from '@/stores/ProcessStore'
 import { useStudentStore } from "@/stores/StudentStore"
+import { useTeacherStore } from "@/stores/TeacherStore"
 import { storeToRefs } from "pinia"
 import {ref} from 'vue'
 
@@ -30,7 +31,9 @@ export const updateTime = async (start: string, end: string) => {
       end
     }
   }).then(() => {
-    alert('设置成功' + '\n' + '开始时间为：' + start + '\n' + '结束时间为：' + end)
+    //@ts-ignore
+    ElMessage({message:'设置成功' + '\n' + '开始时间为：' + start + '\n' + '结束时间为：' + end, 
+    type:'success', center: true })
   })
 }
 export const addProcessService = async (ps: Process) => {
@@ -76,7 +79,8 @@ export const addTeachers = async (teachers:Teacher[]) => {
       url: '/admin/teacher',
       data: teachers
   }).then(() => {
-      alert('数据导入成功')
+      //@ts-ignore
+      ElMessage({message:'数据导入成功！', type:'success', center: true })
   })
 }
 export const addStudent = async (students:Student[]) => {
@@ -89,7 +93,8 @@ export const addStudent = async (students:Student[]) => {
     url: '/admin/student',
     data: students
   }).then(() => {
-    alert('数据导入成功')
+    //@ts-ignore
+    ElMessage({message:'数据导入成功！', type:'success', center: true })
   })
 }
 export const updateP1 = async (number:string, pw1:string, pw2:string) => {
@@ -109,7 +114,8 @@ export const updateP1 = async (number:string, pw1:string, pw2:string) => {
       method: 'put',
       url: `/admin/password/${number}/${pw1}`
   }).then(() => {
-      alert('重置密码成功，请妥善保存密码')
+      //@ts-ignore
+      ElMessage({message:'重置密码成功，请妥善保存密码！', type:'success', center: true })
   })
 }
 export const updateP2 = async (number:string) => {
@@ -121,7 +127,8 @@ export const updateP2 = async (number:string) => {
       method: 'put',
       url: `/admin/password/${number}`
   }).then(() => {
-      alert('重置密码成功，为默认密码')
+      //@ts-ignore
+      ElMessage({message:'重置密码成功，为默认密码！', type:'success', center: true })
   })
 }
 export const groups = ref<any>([])
@@ -148,7 +155,8 @@ export const updateGroup = async (sid:string,newGroup:number) => {
       alert('更新失败')
       return
     }
-    alert('更新成功')
+    //@ts-ignore
+    ElMessage({message:'更新成功！', type:'success', center: true })
   })
 }
 export const postStudentsGroup = async (students:any[]) => {
@@ -161,7 +169,8 @@ export const postStudentsGroup = async (students:any[]) => {
       alert('更新失败')
       return
     }
-    alert('更新成功')
+    //@ts-ignore
+    ElMessage({message:'更新成功！', type:'success', center: true })
   })
 }
 export const postStudentsProjectTitle = async (students:any[]) => {
@@ -174,6 +183,15 @@ export const postStudentsProjectTitle = async (students:any[]) => {
       alert('导入失败')
       return
     }
-    alert('导入成功')
+    //@ts-ignore
+    ElMessage({message:'导入成功！', type:'success', center: true })
+  })
+}
+export const getAllTeachers = async () => {
+  const teacherStore = useTeacherStore()
+  if(teacherStore.teachers.length > 0) return teacherStore.teachers
+  await axios.get('/admin/teachers')
+  .then(res => {
+    teacherStore.teachers = res.data.data.teachers ?? []
   })
 }
