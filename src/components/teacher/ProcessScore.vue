@@ -132,6 +132,7 @@ const confirmScore = async () => {
     teacherId: teacher.value.id,
     detail: newDetail
   })
+  console.log(processScore.value)
   postProcessScore(processScore.value)
 
   processScoresPG.value = await getProcessScores(pid)
@@ -264,7 +265,7 @@ function computedLevelCount() {
       <el-table-column prop="student.projectTitle" label="毕设题目"/>
       <el-table-column>
         <template #default="scope">
-          <el-button size="large" type="success" @click="addScore(scope.row.id)">
+          <el-button size="large" type="success" @click="addScore(scope.row.student.id)">
             <el-icon><StarFilled /></el-icon>评分
           </el-button>
         </template>
