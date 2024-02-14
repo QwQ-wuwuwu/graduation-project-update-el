@@ -11,7 +11,7 @@ const confirmTime = () => {
 }
 </script>
 <template>
-    <el-row style="margin-left: 100px;">
+    <el-row style="margin-left: auto;">
         <el-col :span="18">
             <el-card shadow="always">
                 <el-text type="primary" size="large">设置系统开始时间为：</el-text>

@@ -28,7 +28,7 @@ const toUnlogin = () => {
                     </div>
                 </el-col>
                 <el-col :span="8">
-                    <div class="grid-content ep-bg-purple">
+                    <div class="grid-content ep-bg-purple" style="display: flex;">
                         <el-button @click="toUpdatePassword" type="primary"><el-icon><Setting /></el-icon>修改密码</el-button>
                         <el-button @click="toUnlogin" type="danger"><el-icon>
                             <SwitchButton />

@@ -85,7 +85,7 @@ const creatQueueNumber = () => {
     </div>
     <el-row >
         <el-table style="width: 100%; margin-top: 15px;" :data="newGroupStudents">
-                <el-table-column type="index" label="序号" width="180"/>
+                <el-table-column type="index" label="序号"/>
                 <el-table-column prop="student.name" label="姓名"/>
                 <el-table-column prop="student.groupId" label="审核小组"/>
                 <el-table-column prop="tgroup" label="不可分配到"/>

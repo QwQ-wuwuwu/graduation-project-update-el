@@ -50,18 +50,19 @@ const Login = async () => {
 </script>
 <template>
     <el-row style="margin-top: 100px;">
-        <el-col :span="6" :offset="9" class="contain">
+        <el-col :span="6" :offset="9" class="contain" style="margin-top: 25px;">
             <el-card shadow="always">
+                <h3>毕设过程管理系统</h3>
                 <el-text class="mx-1" size="large" type="primary">用户登录</el-text>
-                <div>
-                    <el-input v-model.number="user.number" style="margin-top: 10px; width: 280px;" type="text" 
+                <div style="margin-top: 15px;">
+                    <el-input v-model.number="user.number" style="margin-top: 10px; width: auto;" type="text" 
                     :prefix-icon="Avatar" placeholder="*请输入账号"/>
-                    <el-input v-model="user.password" style="margin-top: 10px; width: 280px;" type="password" 
-                    :prefix-icon="Lock" placeholder="*请输入密码"/>
+                    <el-input v-model="user.password" style="margin-top: 20px; width: auto;" type="password" 
+                    :prefix-icon="Lock" placeholder="*请输入密码"/> <br>
                     <el-radio-group v-model="user.role" style="margin-top: 10px;">
                         <label><el-radio label="0">学生</el-radio></label>
-                        <label><el-radio label="1" style="margin-left: 50px;">导师</el-radio></label>
-                        <label><el-radio label="2" style="margin-left: 50px;">管理员</el-radio></label>
+                        <label><el-radio label="1" style="margin-left: 10px">导师</el-radio></label>
+                        <label><el-radio label="2" style="margin-left: 10px">管理员</el-radio></label>
                     </el-radio-group>
                 </div>
                 <el-button type="primary" style="margin-top: 10px;" @click="Login"><el-icon>

@@ -12,8 +12,8 @@ students.value = result.students
         <el-text type="info" size="large">未选择导师学生信息表</el-text>
     </div>
 <el-table :data="students" border style="width: 100%">
-    <el-table-column type="index" label="#" width="180" />
-    <el-table-column prop="name" label="姓名" width="180" />
+    <el-table-column type="index" label="#"/>
+    <el-table-column prop="name" label="姓名"/>
     <el-table-column prop="projectTitle" label="毕设题目"/>
     <el-table-column prop="number" label="学号" />
 </el-table>

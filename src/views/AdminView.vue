@@ -26,7 +26,7 @@ const toUnlogin = () => {
                             <el-text type="primary" size="large">毕设过程管理系统<el-icon><Reading /></el-icon></el-text>
                         </div>
                     </el-col>
-                    <el-col :span="8">
+                    <el-col :span="8" style="display: flex;">
                         <div class="grid-content ep-bg-purple">
                             <el-button @click="toUpdatePassword" type="primary"><el-icon><Setting /></el-icon>修改密码</el-button>
                             <el-button @click="toUnlogin" type="danger"><el-icon>

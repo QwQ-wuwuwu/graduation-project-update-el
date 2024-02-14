@@ -46,11 +46,11 @@ const deleteP = (pid:string) => {
 }
 </script>
 <template>
-    <el-row style="margin-left: 100px;">
+    <el-row style="margin-left: auto;">
         <el-col :span="18">
             <el-card shadow="always">
                 <el-text type="primary" size="large">阶段详情设定</el-text>
-                <el-form :model="processR" style="margin-top: 15px; margin-left: 30px;">
+                <el-form :model="processR" style="margin-top: 15px; ">
                     <div>
                         <el-row :gutter="10" style="margin-bottom: 10px">
                             <el-col :span="6">
@@ -120,7 +120,7 @@ const deleteP = (pid:string) => {
                 </el-form>
             </el-card>
             <el-table :data="processStore" style="width: 100%; margin-top: 15px;">
-                <el-table-column type="index" label="序号" width="100px"/>
+                <el-table-column type="index" label="序号"/>
                 <el-table-column prop="processName" label="阶段"/>
                 <el-table-column prop="point" label="占比"/>
                 <el-table-column prop="auth" label="类型"/>
