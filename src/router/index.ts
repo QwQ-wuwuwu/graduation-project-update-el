@@ -58,8 +58,9 @@ const router = createRouter({
       },
       children: [
         {
-          path: 'score',
-          component: () => import('@/components/teacher/ProcessScore.vue')
+          path: 'score/:id',
+          component: () => import('@/components/teacher/ProcessScore.vue'),
+          props: true // 将路由参数传递给组件
         },
         {
           path: 'groupScore',
@@ -74,7 +75,7 @@ const router = createRouter({
           component: () => import('@/components/teacher/SelectStudent.vue')
         }
       ],
-      redirect: '/teacher/score'
+      redirect: '/teacher/groupScore'
     },
     {
       path: '/student',

@@ -38,18 +38,18 @@ export const getTeachers = async () => {
     })
 }
 export const scoreOrGetInfo = async (pid:any,sid:any,tid:any) => {
-    let student:any = {}
     let processScores:any = []
     let flag:number = 0
     await axios.get(`/teacher/processScore/${pid}/${sid}/${tid}`)
     .then(res => {
-        student = res.data.data.student ?? ''
-        processScores = res.data.data.processScores ?? []
-        flag = res.data.data.flag ?? 0
+        if(res.data.code == 200) {
+            processScores = res.data.data?.processScores
+            flag = res.data.data?.flag
+        }
     })
-    return {student, processScores, flag}
+    return {processScores, flag}
 }
-export const getProcessScoresByPidAndTid = async (tid:string,pid:string) => {
+export const getProcessScoresByPidAndTid = async (tid:string,pid:any) => {
     let processScores:any = []
     await axios.get(`/teacher/processScore/${pid}/${tid}`)
     .then(res => {
@@ -66,6 +66,7 @@ export const getProcessScoresByPid = async (pid:string) => {
     return {processScores}
 }
 export const postProcessScore = async (processScore:any) => {
+    let processScores:any = []
     await axios({
         method: 'post',
         url: '/teacher/processScore',
@@ -74,18 +75,11 @@ export const postProcessScore = async (processScore:any) => {
         if(res.data.code == 200) {
             //@ts-ignore
             ElMessage({message:'评分成功！', type:'success', center: true })
+            processScores = res.data.data.processScores ?? []
         }
         else alert(res.data.message)
     })
-}
-export const deleteProcessScore = async (pid:string,sid:string,tid:string) => {
-    await axios({
-        method: 'delete',
-        url: `/teacher/processScore/${pid}/${sid}/${tid}`
-    }).then(res => {
-        if(res.data.code == 404)
-        alert('操作失败') 
-    })
+    return processScores
 }
 export const getFile = async (pid:string,sNumber:string,pNumber:any) => {
     await axios({
@@ -153,9 +147,9 @@ export const getProcessScores = async (pid:string) => {
     })
     return processScores
 }
-export const getAllFiles = async () => {
+export const getFilesByPid = async (pid:any) => {
     let files:any = []
-    await axios.get('/teacher/files')
+    await axios.get(`/teacher/files/${pid}`)
     .then(res => {
         files = res.data.data.files ?? []
     })

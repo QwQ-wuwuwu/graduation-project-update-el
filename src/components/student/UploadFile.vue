@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import {ref} from 'vue'
-import {getAllProcess,getFilesByStu} from '@/service/studentService'
+import {getAllProcess,getFilesByStu, getStudent} from '@/service/studentService'
 import axios from "@/axios"
 import { useProcessStore } from '@/stores/ProcessStore'
 import {useFilesStore} from '@/stores/FilesStore'
 import { storeToRefs } from 'pinia';
+import type { Student } from '@/types'
 
 const processStore = useProcessStore()
 const filesStore = useFilesStore()
@@ -14,6 +15,10 @@ await getFilesByStu()
 
 const processes:any = storeToRefs(processStore).processesS
 const files:any = storeToRefs(filesStore).files
+const detail = ref<any[]>([])
+files.value.forEach((f:any,index:any) => {
+  detail.value[index] = f.detail.split('\\')[1]
+})
 const process = ref<any>({})
 const attach = ref<any>(null)
 const myUpload = ref<any>(null);
@@ -29,27 +34,29 @@ const showInfo = () => {
   selectVisible.value = true
 }
 
-const confirm = () => {
-  selectVisible.value = false
-}
 const extS = ref('')
 const numberS = ref('')
 const selectAttach = (ext:string,number:string) => {
   extS.value = ext
   numberS.value = number
+  selectVisible.value = false
 }
 
-const readFile = (f:any) => {
+const student = ref<Student>()
+const fileName = ref('')
+const readFile = async (f:any) => {
+  student.value = await getStudent()
   file.value = f.raw // el-upload组件的文件
   const ext = file.value?.name.substring(file.value.name.lastIndexOf('.'))
+  fileName.value = `${student.value?.queueNumber}-${student.value?.name}-${student.value?.number}-${selection.value.pname}${ext}`
   if(extS.value == '') {
     alert('未选择附件类型')
     return
   }
   if (extS.value.includes(ext)) {
-    formData.append('file', file.value)
+    formData.append('file', file.value, fileName.value)
   } else {
-    alert('文件格式错误')
+    alert('文件格式错误，请重新选择')
     return
   }
 }
@@ -70,9 +77,11 @@ const submitFile = async () => {
         method: 'post',
         url: `/student/upload/${selection.value.pid}/${selection.value.pname}/${numberS.value}`,
         data: formData
-    }).then(() => {
-      //@ts-ignore
-      ElMessage({message:'文件上传成功！', type:'success', center: true })
+    }).then((res) => {
+      if(res.data.code == 200) {
+        //@ts-ignore
+        ElMessage({message:'文件上传成功！', type:'success', center: true })
+      } else alert('文件上传失败！')
     })
     // 清空上一次输入
     formData.delete('file')
@@ -82,6 +91,9 @@ const submitFile = async () => {
     myUpload.value?.clearFiles()
     await getFilesByStu()
     files.value = filesStore.files
+    files.value.forEach((f: any, index: any) => {
+    detail.value[index] = f.detail.split('\\')[1]
+  })
 }
 
 </script>
@@ -112,9 +124,13 @@ const submitFile = async () => {
   <el-text v-show="extS != ''" type="danger" size="small">{{ extS }}文件</el-text>
     </div>
 
-  <el-table v-show="files.length > 0" :data="files" style="width: 100%" >
+  <el-table v-show="files.length > 0" :data="detail" style="width: 100%" >
       <el-table-column type="index" label="序号" width="150" />
-      <el-table-column prop="detail" label="已上传文件"/>
+      <el-table-column label="已上传文件">
+        <template #default="scope">
+          {{ scope.row }}
+        </template>
+      </el-table-column>
   </el-table>
 
   <br>
@@ -122,10 +138,10 @@ const submitFile = async () => {
 
   <el-dialog v-model="selectVisible" title="选择阶段附件类型：" width="30%">
     <el-table :data="attach" style="width: 100%" >
-      <el-table-column type="index" label="序号" width="60" />
-      <el-table-column prop="name" label="名称" width="100" />
-      <el-table-column prop="ext" label="类型" width="80" />
-      <el-table-column prop="description" label="附件用于" width="130" />
+      <el-table-column type="index" label="序号" />
+      <el-table-column prop="name" label="名称"/>
+      <el-table-column prop="ext" label="类型"/>
+      <el-table-column prop="description" label="附件用于"/>
       <el-table-column>
         <template #default="scope">
           <el-button size="large" type="success" @click="selectAttach(scope.row.ext,scope.row.number)">
@@ -133,10 +149,5 @@ const submitFile = async () => {
         </template>
       </el-table-column>
   </el-table>
-  <template #footer>
-    <span class="dialog-footer">
-      <el-button type="primary" @click="confirm">确定</el-button>
-    </span>
-  </template>
   </el-dialog>
 </template>

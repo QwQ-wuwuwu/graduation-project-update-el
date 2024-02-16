@@ -5,7 +5,7 @@ import {ref} from 'vue'
 export const useProcessStore = defineStore('useProcessStore', () => {
   const processesS = ref<Process[]>([])
   
-  const getProcess = (pid:string) => {
+  const getProcess = (pid:any) => {
     const process = ref<Process>({})
     processesS.value.forEach((p) => {
       if(p.id == pid) {

@@ -52,3 +52,11 @@ export const getFilesByStu = async () => {
         filesStore.files = res.data.data.files
     })
 }
+export const getStudent = async () => {
+    const student = ref<Student>()
+    await axios.get('/student/student')
+    .then(res => {
+        student.value = res.data.data.student
+    })
+    return student.value
+}
