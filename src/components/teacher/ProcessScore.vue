@@ -107,10 +107,10 @@ const confirmScore = async () => {
       })
       //@ts-ignore
       comment.value.detail.push(detail.value)
-      sum.value += Math.round(scores.value[i] * (items?.value[i].point / 100))
+      sum.value += scores.value[i] * (items?.value[i].point / 100)
     }
   }
-  comment.value.score = sum.value
+  comment.value.score = Math.round(sum.value)
   comment.value.teacherName = teacher.value.name
   const newDetail = JSON.stringify(comment.value)
   const processScore = ref({
@@ -122,7 +122,6 @@ const confirmScore = async () => {
   processScores.value = await postProcessScore(processScore.value)
   studentList.value = []
   fn()
-  computedLevelCount()
   selectVisible.value = false
   currentPs.value = processScores.value.filter(ps => ps.teacherId == teacher.value.id)
 }
@@ -143,16 +142,22 @@ function fn () {
   students.value.forEach((s: any) => {
     const student: StudentList = { student: s, file: [], score: -1 }
     let score = 0
-    const tempPs = processScores.value.filter(ps => ps.studentId == s.id)
+    const flagPs = processScores.value.filter(ps => ps.studentId == s.id && ps.teacherId == teacher.value.id)
     const newFiles = files.value.filter((f: any) => f.studentNumber == s.number)
-    if(tempPs.length > 0) {
-      tempPs.forEach(ps => {
-        const detail = JSON.parse(ps.detail)
-        score += parseFloat(detail.score)
-      })
-      student.score = Math.round(score / tempPs.length)
-      student.file = newFiles
-      studentList.value.push(student)
+    if(flagPs.length > 0) {
+      const tempPs = processScores.value.filter(ps => ps.studentId == s.id)
+      if (tempPs.length > 0) {
+        tempPs.forEach(ps => {
+          const detail = JSON.parse(ps.detail)
+          score += parseFloat(detail.score)
+        })
+        student.score = Math.round(score / tempPs.length)
+        student.file = newFiles
+        studentList.value.push(student)
+      } else {
+        student.file = newFiles
+        studentList.value.push(student)
+      }
     } else {
       student.file = newFiles
       studentList.value.push(student)
