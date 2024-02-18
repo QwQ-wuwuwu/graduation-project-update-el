@@ -4,8 +4,8 @@ import { useProcessStore } from '@/stores/ProcessStore'
 import { useTeacherStore } from '@/stores/TeacherStore'
 import { storeToRefs } from 'pinia';
 import type { Student, Comment, Detail, Teacher } from '@/types';
-import {getStudents, getTeachers, getProcessScoresByPidAndTid,
-        getFilesByPid, getFile, scoreOrGetInfo,postProcessScore} from '@/service/teacherService'
+import {getStudents, getTeachers, getProcessScoresByPid,
+        getFilesByPid, getFile, scoreOrGetInfo,postProcessScore,} from '@/service/teacherService'
 import { defineProps } from 'vue';
 
 await getTeachers()
@@ -44,7 +44,9 @@ const selectVisible = ref(false)
 teacher.value = teacherStore.getTeacher(sessionStorage.getItem("number"))
 const processScores = ref<any[]>([])
 
-processScores.value = await getProcessScoresByPidAndTid(teacher.value.id,pid.value)
+processScores.value = await getProcessScoresByPid(pid.value)
+const currentPs = ref<any[]>([])
+currentPs.value = processScores.value.filter(ps => ps.teacherId == teacher.value.id)
 
 const files = toRef(await getFilesByPid(pid.value))
 const selectFiles = ref<any[]>([])
@@ -105,7 +107,7 @@ const confirmScore = async () => {
       })
       //@ts-ignore
       comment.value.detail.push(detail.value)
-      sum.value += (scores.value[i] * (items?.value[i].point / 100))
+      sum.value += Math.round(scores.value[i] * (items?.value[i].point / 100))
     }
   }
   comment.value.score = sum.value
@@ -122,13 +124,14 @@ const confirmScore = async () => {
   fn()
   computedLevelCount()
   selectVisible.value = false
+  currentPs.value = processScores.value.filter(ps => ps.teacherId == teacher.value.id)
 }
 
 const getFilesInfo = (files:any) => {
   fileDialog.value = true
   selectFiles.value = files
   selectFiles.value.forEach((f: any, index: any) => {
-    selectFiles.value[index].detail = f.detail.split('\\')[1]
+    selectFiles.value[index].detail = f.detail.split('/')[1]
   })
 }
 
@@ -139,18 +142,21 @@ const downloadFile = (sNumber:any,pNumber:any) => {
 function fn () {
   students.value.forEach((s: any) => {
     const student: StudentList = { student: s, file: [], score: -1 }
-    let score = -1
-    processScores.value.forEach(ps => {
-      if (ps.studentId == s.id && ps.teacherId == teacher.value.id) {
-        const detail = JSON.parse(ps.detail)
-        score = detail.score
-        return
-      }
-    })
+    let score = 0
+    const tempPs = processScores.value.filter(ps => ps.studentId == s.id)
     const newFiles = files.value.filter((f: any) => f.studentNumber == s.number)
-    student.score = score
-    student.file = newFiles
-    studentList.value.push(student)
+    if(tempPs.length > 0) {
+      tempPs.forEach(ps => {
+        const detail = JSON.parse(ps.detail)
+        score += parseFloat(detail.score)
+      })
+      student.score = Math.round(score / tempPs.length)
+      student.file = newFiles
+      studentList.value.push(student)
+    } else {
+      student.file = newFiles
+      studentList.value.push(student)
+    }
   })
   computedLevelCount()
 }
@@ -162,7 +168,7 @@ watch(scores, () => {
       sum.value += (scores.value[i] * (items?.value[i].point / 100))
     }
   }
-  getScore.value = parseFloat((sum.value).toFixed(2))
+  getScore.value = Math.round(sum.value)
 }, {deep:true})
 
 function computedAverageScore() {
@@ -171,7 +177,7 @@ function computedAverageScore() {
     sum += d.score
   })
   //@ts-ignore
-  averageScore.value = (sum / detailsT.value.length).toFixed(2)
+  averageScore.value = Math.round(sum / detailsT.value.length)
 }
 
 function computedLevelCount() {
@@ -209,7 +215,7 @@ function computedLevelCount() {
   </div>
   <div style="margin-top: 15px;">
     <el-text type="info" size="large">共需评分：<el-tag>{{ students.length }}</el-tag></el-text>
-    <el-text type="info" size="large">您已评：<el-tag>{{ processScores.length }}</el-tag></el-text>
+    <el-text type="info" size="large">您已评：<el-tag>{{ currentPs.length }}</el-tag></el-text>
   </div>
   <div style="margin-top: 15px;">
     优：<el-tag type="success">{{ levelCount.score_90 }}</el-tag>

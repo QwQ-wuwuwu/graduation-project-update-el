@@ -49,21 +49,13 @@ export const scoreOrGetInfo = async (pid:any,sid:any,tid:any) => {
     })
     return {processScores, flag}
 }
-export const getProcessScoresByPidAndTid = async (tid:string,pid:any) => {
-    let processScores:any = []
-    await axios.get(`/teacher/processScore/${pid}/${tid}`)
-    .then(res => {
-        processScores = res.data.data.processScores ?? []
-    })
-    return processScores
-}
 export const getProcessScoresByPid = async (pid:string) => {
     let processScores:any = []
-    await axios.get(`/teacher/processScore/${pid}`)
+    await axios.get(`/teacher/processScores/${pid}`)
     .then(res => {
         processScores = res.data.data.processScores 
     })
-    return {processScores}
+    return processScores
 }
 export const postProcessScore = async (processScore:any) => {
     let processScores:any = []

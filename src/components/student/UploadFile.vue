@@ -92,7 +92,7 @@ const submitFile = async () => {
     await getFilesByStu()
     files.value = filesStore.files
     files.value.forEach((f: any, index: any) => {
-    detail.value[index] = f.detail.split('\\')[1]
+    detail.value[index] = f.detail.split('/')[1]
   })
 }
 

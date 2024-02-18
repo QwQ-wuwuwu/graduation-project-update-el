@@ -24,9 +24,9 @@ const confirm = async () => {
 }
 </script>
 <template>
-    <el-row v-if="code != 200" style="margin-top: 30px;">
+    <el-row v-if="code != 200" style="margin-top: 60px;">
         <el-col>
-            <el-text type="success" size="large">您已选择导师！</el-text> <br> <br>
+            <el-text type="success" size="large">系统已为您分配导师！</el-text> <br> <br>
             <el-text type="success" size="large">-指导教师-：</el-text>
             <el-tag type="danger" size="large" effect="light">
                 {{ student?.teacherName }}
@@ -39,13 +39,9 @@ const confirm = async () => {
                 <el-tag type="danger" size="large" effect="light">
                 序号{{ student?.queueNumber }}
             </el-tag></el-text>
-            <el-text v-show="student.queueNumber == null" type="danger" size="large">-毕设答辩顺序-：
-                <el-tag type="danger" size="large" effect="light">
-                请等待系统分配
-            </el-tag></el-text>
         </el-col>
     </el-row>
-    <el-table v-if="code == 200" :data="teachers" style="width: 100%" >
+    <el-table v-if="code == 200" :data="teachers" style="width: 100%;" >
         <el-table-column type="index" label="#" />
         <el-table-column prop="name" label="姓名"/>
         <el-table-column prop="leftSelect" label="可选人数"/>

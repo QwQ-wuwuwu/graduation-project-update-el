@@ -3,7 +3,7 @@ import { toRef } from 'vue';
 import { RouterView, RouterLink } from 'vue-router'
 import router from '@/router'
 
-const number = toRef(sessionStorage.getItem("number"))
+const number = toRef(sessionStorage.getItem("name"))
 const toUpdatePassword = () => {
     router.push('/updatePw')
 }
@@ -18,7 +18,9 @@ const toUnlogin = () => {
                 <el-row>
                     <el-col :span="8">
                         <div class="grid-content ep-bg-purple">
-                            <el-text type="primary" size="large"><el-icon><UserFilled /></el-icon>：{{ number }}用户登录成功!</el-text>
+                            <el-text type="primary" size="large">
+                                <el-button @click="toUpdatePassword" type="primary"><el-icon><UserFilled /></el-icon>{{ number }}</el-button>
+                            </el-text>
                         </div>
                     </el-col>
                     <el-col :span="8">
@@ -26,9 +28,8 @@ const toUnlogin = () => {
                             <el-text type="primary" size="large">毕设过程管理系统<el-icon><Reading /></el-icon></el-text>
                         </div>
                     </el-col>
-                    <el-col :span="8" style="display: flex;">
+                    <el-col :span="8">
                         <div class="grid-content ep-bg-purple">
-                            <el-button @click="toUpdatePassword" type="primary"><el-icon><Setting /></el-icon>修改密码</el-button>
                             <el-button @click="toUnlogin" type="danger"><el-icon>
                                 <SwitchButton />
                             </el-icon>logout</el-button>

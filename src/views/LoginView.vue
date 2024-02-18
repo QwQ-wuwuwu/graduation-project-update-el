@@ -6,7 +6,7 @@ import {type User} from '@/types'
 import axios from '@/axios'
 import router from '@/router'
 
-const user = reactive<User>({})
+let user = reactive<User>({})
 user.number = ''
 user.password = ''
 user.role = -1
@@ -31,8 +31,10 @@ const Login = async () => {
             const token = res.headers.token
             token && sessionStorage.setItem("token", token)
             useLogin.loginedUser = data.data.user
+            user = data.data.user
 
             user.number && sessionStorage.setItem("number", user.number)
+            user.name && sessionStorage.setItem("name", user.name)
             res.headers.role && sessionStorage.setItem("role", res.headers.role)
             if (user.role == 0) {
                 router.push('/student')

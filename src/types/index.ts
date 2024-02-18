@@ -31,16 +31,18 @@ export interface Student {
   number?:string,
   queueNumber?:number,
   projectTitle?:string,
-  groupId?:string,
-  teacherId?:string
+  groupId?:number,
+  teacherId?:string,
+  teacherName?:string
 }
 export interface Teacher {
   id?:string,
   name:string,
   number:string,
   total:number,
-  leftSelect:number,
-  groupId:number
+  groupId:number,
+  groupA:number,
+  groupC:number
 }
 export interface Detail {
   number:number,

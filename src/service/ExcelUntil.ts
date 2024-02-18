@@ -18,8 +18,9 @@ export function readTeachersFile(file:Blob) {
                     name: t['姓名'],
                     number: t['账号'].toString(),
                     total: t['可选人数'],
-                    leftSelect: t['剩余人数'],
-                    groupId: t['组号']
+                    groupId: t['组号'],
+                    groupA: t['A组'],
+                    groupC: t['C组']
                 })
             })
             resolve(teachers)

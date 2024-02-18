@@ -195,3 +195,15 @@ export const getAllTeachers = async () => {
     teacherStore.teachers = res.data.data.teachers ?? []
   })
 }
+export const putStudentsAndTeachers = async (students:any[]) => {
+  await axios({
+    method: 'put',
+    url: '/admin/selection',
+    data: students
+  }).then(res => {
+    if(res.data.code == 200) {
+      //@ts-ignore
+      ElMessage({message:'随机分配导师和审核小组成功！', type:'success', center: true })
+    }
+  })
+}

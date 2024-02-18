@@ -11,7 +11,7 @@ getAllProcess()
 const processStore = useProcessStore()
 const processes = storeToRefs(processStore).processesS
 
-const number = toRef(sessionStorage.getItem("number"))
+const number = toRef(sessionStorage.getItem("name"))
 const toUpdatePassword = () => {
     router.push('/updatePw')
 }
@@ -27,7 +27,9 @@ const toUnlogin = () => {
             <el-row>
                 <el-col :span="8">
                     <div class="grid-content ep-bg-purple">
-                        <el-text type="primary" size="large"><el-icon><UserFilled /></el-icon>：{{ number }}用户登录成功!</el-text>
+                        <el-text type="primary" size="large">
+                            <el-button @click="toUpdatePassword" type="primary"><el-icon><UserFilled /></el-icon>{{number}}</el-button>
+                        </el-text>
                     </div>
                 </el-col>
                 <el-col :span="8">
@@ -36,8 +38,7 @@ const toUnlogin = () => {
                     </div>
                 </el-col>
                 <el-col :span="8">
-                    <div class="grid-content ep-bg-purple" style="display: flex;">
-                        <el-button @click="toUpdatePassword" type="primary"><el-icon><Setting /></el-icon>修改密码</el-button>
+                    <div class="grid-content ep-bg-purple">
                         <el-button @click="toUnlogin" type="danger"><el-icon>
                             <SwitchButton />
                         </el-icon>logout</el-button>
@@ -45,12 +46,14 @@ const toUnlogin = () => {
                 </el-col>
             </el-row>
             <el-row style="margin-top: 15px;">
-                <el-col :span="16" :offset="3">
+                <el-col :span="16" :offset="4">
                     <div>
                         <el-menu class="el-menu-demo" mode="horizontal" :default-active="String(processes.length + 1)" :ellipsis="false">
-                            <el-menu-item v-for="(p,index) in processes" :key="p.id" :index="String(index + 1)">
+                            <el-menu-item style="margin: 0;" v-for="(p,index) in processes" :key="p.id" :index="String(index + 1)">
                                 <el-icon><Edit /></el-icon>
-                                <router-link :to="'/teacher/score/' + p.id" class="nav">{{ p.processName }}</router-link>
+                                <router-link :to="'/teacher/score/' + p.id" class="nav">
+                                   {{ p.processName }}
+                                </router-link>
                             </el-menu-item>
                             <div class="flex-grow" />
                             <el-menu-item :index="String(processes.length + 1)"><el-icon><HelpFilled /></el-icon>
@@ -72,7 +75,7 @@ const toUnlogin = () => {
         </el-header>
         <el-main>
             <el-row style="margin-top: 50px;">
-                <el-col :span="12" :offset="5">
+                <el-col :span="16" :offset="4">
                     <Suspense><router-view :key="$route.fullPath"/></Suspense> <!--使用 key 属性强制重新渲染组件-->
                 </el-col>
             </el-row>

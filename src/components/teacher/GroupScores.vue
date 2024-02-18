@@ -59,9 +59,9 @@ students.value.forEach((s) => {
         })
         score = (score / stuProcessScores.length)
         if (score) {
-            totalScore += parseFloat((p.point * 0.01 * score).toFixed(2))
+            totalScore += Math.round(p.point * 0.01 * score)
         }
-        newStudentScore.scores?.push({ process: p, score: score.toFixed(2) })
+        newStudentScore.scores?.push({ process: p, score: Math.round(score) })
     })
     newStudentScore.totalScore = totalScore
     studentsScores.push(newStudentScore)
