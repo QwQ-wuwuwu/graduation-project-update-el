@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { toRef } from 'vue';
 import router from '@/router'
-import { RouterView, RouterLink } from 'vue-router'
+import { RouterView } from 'vue-router'
 import {getAllProcess} from '@/service/teacherService'
 import { useProcessStore } from '@/stores/ProcessStore'
 import { storeToRefs } from 'pinia';
@@ -48,24 +48,23 @@ const toUnlogin = () => {
             <el-row style="margin-top: 15px;">
                 <el-col :span="16" :offset="4">
                     <div>
-                        <el-menu class="el-menu-demo" mode="horizontal" :default-active="String(processes.length + 1)" :ellipsis="false">
-                            <el-menu-item style="margin: 0;" v-for="(p,index) in processes" :key="p.id" :index="String(index + 1)">
-                                <el-icon><Edit /></el-icon>
-                                <router-link :to="'/teacher/score/' + p.id" class="nav">
-                                   {{ p.processName }}
-                                </router-link>
+                        <el-menu class="el-menu-demo" mode="horizontal" default-active="/teacher/groupScore"
+                        :ellipsis="false" 
+                        :router="true">
+                            <el-menu-item style="margin: 0;" v-for="p in processes" :key="p.id" :index="'/teacher/score/' + p.id">
+                                <el-icon><Edit /></el-icon>{{ p.processName }}
                             </el-menu-item>
                             <div class="flex-grow" />
-                            <el-menu-item :index="String(processes.length + 1)"><el-icon><HelpFilled /></el-icon>
-                                <router-link to="/teacher/groupScore" class="nav">小组成绩统计</router-link>
+                            <el-menu-item index="/teacher/groupScore"><el-icon><HelpFilled /></el-icon>
+                                小组成绩统计
                             </el-menu-item>
                             <el-sub-menu :index="String(processes.length + 2)">
                                 <template #title><el-icon><Menu /></el-icon>其他功能</template>
-                                <el-menu-item :index="String((processes.length + 3))">
-                                    <router-link to="/teacher/unSelect" class="nav">未选择学生信息</router-link>
+                                <el-menu-item index="/teacher/unSelect">
+                                   未选择学生信息
                                 </el-menu-item>
-                                <el-menu-item :index="String((processes.length + 4))">
-                                    <router-link to="/teacher/select" class="nav">指导学生信息</router-link>
+                                <el-menu-item index="/teacher/select">
+                                    指导学生信息
                                 </el-menu-item>
                             </el-sub-menu>
                         </el-menu>
@@ -89,9 +88,5 @@ const toUnlogin = () => {
 }
 .flex-grow {
   flex-grow: 1;
-}
-.nav {
-    text-decoration: none;
-    color: inherit;
 }
 </style>

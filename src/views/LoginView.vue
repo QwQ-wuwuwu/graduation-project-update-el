@@ -9,11 +9,10 @@ import router from '@/router'
 let user = reactive<User>({})
 user.number = ''
 user.password = ''
-user.role = -1
 const useLogin = useLoginStore()
 
 const Login = async () => {
-    if (!user.number || !user.password || user.role == -1) {
+    if (!user.number || !user.password) {
         alert("还有用户信息未输入")
         return
     }
@@ -23,7 +22,6 @@ const Login = async () => {
         data: {
             number: user.number,
             password: user.password,
-            role: user.role
         }
     }).then(res => {
         if (res.data.code == 200) {
@@ -60,14 +58,9 @@ const Login = async () => {
                     <el-input v-model.number="user.number" style="margin-top: 10px; width: auto;" type="text" 
                     :prefix-icon="Avatar" placeholder="*请输入账号"/>
                     <el-input v-model="user.password" style="margin-top: 20px; width: auto;" type="password" 
-                    :prefix-icon="Lock" placeholder="*请输入密码"/> <br>
-                    <el-radio-group v-model="user.role" style="margin-top: 10px;">
-                        <label><el-radio label="0">学生</el-radio></label>
-                        <label><el-radio label="1" style="margin-left: 10px">导师</el-radio></label>
-                        <label><el-radio label="2" style="margin-left: 10px">管理员</el-radio></label>
-                    </el-radio-group>
+                    :prefix-icon="Lock" placeholder="*请输入密码"/>
                 </div>
-                <el-button type="primary" style="margin-top: 10px;" @click="Login"><el-icon>
+                <el-button type="primary" style="margin-top: 25px;" @click="Login"><el-icon>
                         <SwitchButton />
                 </el-icon>Login</el-button>
             </el-card>

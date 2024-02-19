@@ -270,7 +270,7 @@ function computedLevelCount() {
     </div>
     <div style="margin-top: 15px;" v-show="flag == 1">
       <div style="text-align: left; margin-left: 42%;">
-        已评：<el-tag v-for="(d,index) in detailsT" :key="index">{{ d.teacherName }}：{{ d.score }}</el-tag> <br>
+        已评：<el-tag v-for="(d,index) in detailsT" :key="index">{{ d.teacherName }}</el-tag> <br>
         <span v-show="process.auth == 'audit'">未评：<el-tag v-for="t in unTeachers" :key="t.id">{{ t.name }}</el-tag> <br></span>
         平均分：<el-tag>{{ averageScore }}</el-tag>
       </div>

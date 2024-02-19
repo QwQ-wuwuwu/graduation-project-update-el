@@ -43,7 +43,7 @@ const createTutor = () => {
             groupC += t.groupC
         })
         while(t.groupA > 0) { // A组
-            let A = Math.floor(Math.random() * groupA) // 随机一个优秀学生下标
+            let A = Math.floor(Math.random() * groupA) // 随机一个A组学生下标
             let groupIndex = Math.floor(Math.random() * unIncludeGroups.length)
             let student:Student = students.value[A]
             student.teacherId = t.id
@@ -55,7 +55,7 @@ const createTutor = () => {
             t.groupA -= 1
         }
         while(t.groupC > 0) { // C组
-            let C = Math.floor(Math.random() * groupC) // 随机一个不好学生下标
+            let C = Math.floor(Math.random() * groupC) // 随机一个C组学生下标
             let groupIndex = Math.floor(Math.random() * unIncludeGroups.length)
             let student:Student = students.value[students.value.length - C - 1]
             student.teacherId = t.id

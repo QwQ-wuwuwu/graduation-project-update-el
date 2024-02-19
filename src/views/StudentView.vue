@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { toRef } from 'vue';
 import router from '@/router'
-import { RouterView, RouterLink } from 'vue-router'
+import { RouterView } from 'vue-router'
 
 const number = toRef(sessionStorage.getItem("name"))
 const toUpdatePassword = () => {
@@ -39,15 +39,17 @@ const toUnlogin = () => {
             <el-row style="margin-top: 15px;">
                 <el-col :span="16" :offset="4">
                     <div>
-                        <el-menu class="el-menu-demo" mode="horizontal" default-active="1" :ellipsis="false">
+                        <el-menu class="el-menu-demo" mode="horizontal" default-active="/student/selection" 
+                        :ellipsis="false"
+                        :router="true">
                             <!-- <el-menu-item index="1"><el-icon><Promotion /></el-icon>
                                 <router-link to="/student/selection" class="nav">选择导师</router-link></el-menu-item>
                             <div class="flex-grow" /> -->
-                            <el-menu-item index="1"><el-icon><Promotion /></el-icon>
-                                <router-link to="/student/selection" class="nav">导师信息</router-link></el-menu-item>
+                            <el-menu-item index="/student/selection"><el-icon><Promotion /></el-icon>
+                                导师信息</el-menu-item>
                             <div class="flex-grow" />
-                            <el-menu-item index="2"><el-icon><Management /></el-icon>
-                                <router-link to="/student/upload" class="nav">阶段文件上传</router-link></el-menu-item>
+                            <el-menu-item index="/student/upload"><el-icon><Management /></el-icon>
+                                阶段文件上传</el-menu-item>
                         </el-menu>
                     </div>
                 </el-col>
@@ -69,10 +71,6 @@ const toUnlogin = () => {
 }
 .flex-grow {
   flex-grow: 1;
-}
-.nav {
-    text-decoration: none;
-    color: inherit;
 }
 </style>
   
