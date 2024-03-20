@@ -9,6 +9,7 @@ import viteCompression from 'vite-plugin-compression' //启用压缩插件，并
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  base: './',
   plugins: [
     vue(),
     AutoImport({
@@ -28,8 +29,8 @@ export default defineConfig({
   server: {
     proxy: {
       '/api/': {
-        //target: 'http://122.9.35.239:8848',
-        target: 'http://localhost:8080',
+        target: 'http://122.9.35.239:8848',
+        //target: 'http://localhost:8080',
         changeOrigin: true
       }
     }
