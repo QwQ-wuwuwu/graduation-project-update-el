@@ -28,10 +28,10 @@ export default defineConfig({
   },
   server: {
     proxy: {
-      '/api/': {
-        target: 'http://122.9.35.239:8848',
-        //target: 'http://localhost:8080',
-        changeOrigin: true
+      '/api/': { // 获取了路径当中包含api的请求
+        target: 'http://122.9.35.239:8848', // 向前端所在服务器发起请求，再根据它内部配置去请求后端服务器（只有浏览器存在跨域问题）
+        //target: 'http://localhost:8080', // 开发环境下直接向本地后端服务器发请求即可
+        changeOrigin: true // 修改源（不同源指不同协议，不同域名，不同端口，）
       }
     }
   }

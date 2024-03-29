@@ -6,7 +6,8 @@ import { storeToRefs } from 'pinia';
 import type { Student, Comment, Detail, Teacher } from '@/types';
 import {getStudents, getTeachers, getProcessScoresByPid,
         getFilesByPid, getFile, scoreOrGetInfo,postProcessScore,} from '@/service/teacherService'
-import { defineProps } from 'vue';
+//import { defineProps } from 'vue';
+import {useRoute} from 'vue-router'
 
 await getTeachers()
 
@@ -29,8 +30,10 @@ const processStore = useProcessStore()
 const teacherStore = useTeacherStore()
 
 const auth = ref('')
-const props = defineProps(['id']);
-const pid = toRef(props.id)
+const route = useRoute()
+const pid = toRef(route.params.id)
+// const props = defineProps(['id']);
+// const pid = toRef(props.id)
 const process = ref<any>({})
 process.value = processStore.getProcess(pid.value)
 const teachers = storeToRefs(teacherStore).teachers

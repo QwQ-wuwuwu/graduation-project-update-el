@@ -49,7 +49,7 @@ export const scoreOrGetInfo = async (pid:any,sid:any,tid:any) => {
     })
     return {processScores, flag}
 }
-export const getProcessScoresByPid = async (pid:string) => {
+export const getProcessScoresByPid = async (pid:any) => {
     let processScores:any = []
     await axios.get(`/teacher/processScores/${pid}`)
     .then(res => {
@@ -73,7 +73,7 @@ export const postProcessScore = async (processScore:any) => {
     })
     return processScores
 }
-export const getFile = async (pid:string,sNumber:string,pNumber:any) => {
+export const getFile = async (pid:any,sNumber:string,pNumber:any) => {
     await axios({
         method: 'get',
         url: `/teacher/download/${pid}/${sNumber}/${pNumber}`,
